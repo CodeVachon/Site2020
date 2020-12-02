@@ -28,8 +28,53 @@ const config = {
     },
     plugins: [
         ...generateConfig().plugins,
+        `gatsby-plugin-sharp`,
+        `gatsby-transformer-sharp`,
         "gatsby-plugin-react-helmet",
         "gatsby-plugin-styled-components",
+        {
+            resolve: `gatsby-source-try-ghost`,
+            options: {
+                ghostConfig: {
+                    apiUrl: process.env.GHOST_URL,
+                    contentApiKey: process.env.GHOST_TOKEN,
+                    version: `v3`
+                },
+                // Use cache (optional, default: true)
+                cacheResponse: false,
+                // Show info messages (optional, default: true)
+                verbose: true
+            }
+        },
+        {
+            resolve: `gatsby-plugin-ghost-images`,
+            options: {
+                // An array of node types and image fields per node
+                // Image fields must contain a valid absolute path to the image to be downloaded
+                lookup: [
+                    {
+                        type: `GhostPost`,
+                        imgTags: [`feature_image`]
+                    },
+                    {
+                        type: `GhostPage`,
+                        imgTags: [`feature_image`]
+                    },
+                    {
+                        type: `GhostSettings`,
+                        imgTags: [`cover_image`]
+                    }
+                ],
+                // Additional condition to exclude nodes
+                // Takes precedence over lookup
+                exclude: (node) => node.ghostId === undefined,
+                // Additional information messages useful for debugging
+                verbose: true,
+                // Option to disable the module (default: false)
+                disable: false
+            }
+        },
+
         String(sanityConfig.options.projectId.length) > 0
             ? sanityConfig
             : undefined

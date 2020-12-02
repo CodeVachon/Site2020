@@ -7,9 +7,13 @@ const GlobalStyles = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,700&family=Open+Sans&display=swap');
 
 :root {
-    --dark: #333;
-    --light: #eee;
+    --background: #333;
+    --forground: #eee;
     --link: #00f;
+
+    --card-background: #222;
+
+    --mobilebp: 400px;
 }
 
 html {
@@ -30,8 +34,8 @@ body {
 const LayoutDiv = styled.div`
     position: relative;
     z-index: 10;
-    background-color: var(--dark);
-    color: var(--light);
+    background-color: var(--background);
+    color: var(--forground);
     min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr;
@@ -41,9 +45,9 @@ const LayoutDiv = styled.div`
     footer {
         position: relative;
         z-index: 1;
-        background-color: var(--dark, #333);
+        background-color: var(--background, #333);
         a {
-            color: var(--light);
+            color: var(--forground);
         }
     }
 `;
