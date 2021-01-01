@@ -74,7 +74,21 @@ const config = {
                 disable: false
             }
         },
-
+        {
+            resolve: "gatsby-source-untappd-json",
+            // resolve: require.resolve("./../gatsby-source-untappd-json"),
+            options: {
+                src: `./src/data/untappd.json`
+            }
+        },
+        {
+            resolve: "gatsby-source-wakatime",
+            // resolve: require.resolve("./../gatsby-source-wakatime"),
+            options: {
+                apiKey: process.env.WAKATIME_TOKEN,
+                timespan: "14 days"
+            }
+        },
         String(sanityConfig.options.projectId.length) > 0
             ? sanityConfig
             : undefined

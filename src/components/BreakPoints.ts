@@ -1,8 +1,8 @@
 enum BreakPoints {
-    mobile = "400px",
-    tablet = "800px",
-    desktop = "1200px",
-    xl = "1800px"
+    Mobile = "400px",
+    Tablet = "800px",
+    Desktop = "1200px",
+    XL = "1800px"
 }
 
 export default BreakPoints;

@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import "normalize.css";
 import styled, { createGlobalStyle } from "styled-components";
 import { SEO } from "./SEO";
+import { Link } from "gatsby";
+import { FaTwitter, FaLinkedin, FaNpm, FaGithub } from "react-icons/fa";
 
 const GlobalStyles = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,700&family=Open+Sans&display=swap');
@@ -14,6 +16,10 @@ const GlobalStyles = createGlobalStyle`
     --card-background: #222;
 
     --mobilebp: 400px;
+    --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    --background-rotation: 45deg;
 }
 
 html {
@@ -24,17 +30,37 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     min-width: 350px;
+    background: linear-gradient(
+        var(--background-rotation),
+        #720460 0%,
+        #3a036d 50%,
+        rgb(30, 143, 218) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
 }
 
 .header {
     font-family: 'Montserrat', sans-serif;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 `;
 
 const LayoutDiv = styled.div`
     position: relative;
     z-index: 10;
-    background-color: var(--background);
+    /* background-color: var(--background); */
     color: var(--forground);
     min-height: 100vh;
     display: grid;
@@ -43,11 +69,53 @@ const LayoutDiv = styled.div`
     .content {
     }
     footer {
+        padding: 0.5rem 1rem;
         position: relative;
         z-index: 1;
         background-color: var(--background, #333);
+        font-size: 0.7rem;
+        p {
+            margin: 0;
+        }
         a {
             color: var(--forground);
+        }
+    }
+`;
+
+const Nav = styled.nav`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    .bar {
+        padding: 0.5rem 1rem;
+        background-color: #000;
+        flex-grow: 1;
+        box-sizing: border-box;
+    }
+    h1 {
+        font-size: 1rem;
+        margin: 0;
+        color: var(--forground);
+    }
+    .menu {
+        box-sizing: border-box;
+        display: flex;
+        a {
+            box-sizing: border-box;
+            background-color: #000;
+            padding: 0.5rem 1rem;
+            display: block;
+            color: var(--forground);
+            text-decoration: none;
+            transition: 0.6s;
+            &.active {
+                background-color: transparent;
+            }
+            &.icon {
+                padding: 0.5rem;
+            }
         }
     }
 `;
@@ -58,6 +126,56 @@ const Layout: FC<{}> = ({ children }) => {
             <SEO />
             <GlobalStyles />
             <LayoutDiv>
+                <Nav>
+                    <div className="bar">
+                        <Link to="/">
+                            <h1>Christopher Vachon</h1>
+                        </Link>
+                    </div>
+
+                    <div className="menu">
+                        <Link
+                            activeClassName="active"
+                            to={"/recent-blog-posts"}
+                        >
+                            Blog
+                        </Link>
+                        <Link activeClassName="active" to={"/code"}>
+                            Code
+                        </Link>
+                        <Link activeClassName="active" to={"/beer"}>
+                            Beer
+                        </Link>
+                        <a
+                            className="icon"
+                            href="https://www.linkedin.com/in/christophervachon/"
+                            target="_blank"
+                        >
+                            <FaLinkedin />
+                        </a>
+                        <a
+                            className="icon"
+                            href="https://twitter.com/CodeVachon"
+                            target="_blank"
+                        >
+                            <FaTwitter />
+                        </a>
+                        <a
+                            className="icon"
+                            href="https://www.npmjs.com/~codevachon"
+                            target="_blank"
+                        >
+                            <FaNpm />
+                        </a>
+                        <a
+                            className="icon"
+                            href="https://github.com/CodeVachon"
+                            target="_blank"
+                        >
+                            <FaGithub />
+                        </a>
+                    </div>
+                </Nav>
                 <div className="content">{children}</div>
 
                 <footer>

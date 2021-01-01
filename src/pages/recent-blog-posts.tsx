@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import { SEO, BreakPoints } from "./../components";
+import { SEO, BreakPoints, PageHeader } from "./../components";
 import { graphql } from "gatsby";
 import styled from "styled-components";
 import Img from "gatsby-image";
 
-const HomePageGrid = styled.section`
+const BlogGrid = styled.section`
     display: grid;
     margin: 1rem;
     gap: 1rem;
@@ -29,14 +29,25 @@ const BlogPost = styled.div`
     border: 1px var(--light) solid;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: clamp(150px, auto, 300px) auto;
+    grid-template-rows: 1fr;
     .deck {
         padding: 1rem;
-        p {
-            margin: 0;
-            &:first-child {
-                font-size: 1.6rem;
+        a {
+            color: var(--forground);
+            text-decoration: none;
+            border-bottom: 2px var(--background) solid;
+            transition: 0.6s;
+            &:hover {
+                border-bottom: 2px var(--forground) solid;
             }
+        }
+        p:first-child {
+            margin: 0;
+            font-size: 1.4rem;
+            line-height: 1.8rem;
+        }
+        .excerpt {
+            margin-top: 1rem;
         }
     }
 `;
@@ -51,10 +62,13 @@ const ImgContainer = styled.figure`
 `;
 
 const Card = styled.div`
-    background-color: var(--card-background);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: var(--background);
 `;
 
-const HomePage: FC<{
+const BlogPage: FC<{
     data: {
         blogPosts: {
             nodes: {
@@ -82,11 +96,15 @@ const HomePage: FC<{
 
     return (
         <>
-            <SEO pageTitle="Homepage" />
-            <h1>HomePage</h1>
-            <HomePageGrid>
+            <SEO pageTitle="Blog Posts" />
+            <PageHeader>
+                <h1>Blog Posts</h1>
+            </PageHeader>
+
+            <BlogGrid>
                 {data.blogPosts.nodes.map((post) => {
-                    const fluid = post.featureImageSharp.childImageSharp.fluid;
+                    const fluid =
+                        post.featureImageSharp?.childImageSharp?.fluid;
                     return (
                         <Card
                             key={post.id}
@@ -95,34 +113,45 @@ const HomePage: FC<{
                             <BlogPost>
                                 {fluid && (
                                     <ImgContainer>
-                                        <Img
-                                            fluid={{
-                                                ...fluid,
-                                                aspectRatio: 21 / 9
-                                            }}
-                                        />
+                                        <a href={post.url} target="_blank">
+                                            <Img
+                                                fluid={{
+                                                    ...post.featureImageSharp
+                                                        .childImageSharp.fluid,
+                                                    aspectRatio: 21 / 9
+                                                }}
+                                            />
+                                        </a>
                                     </ImgContainer>
                                 )}
                                 <div className="deck">
-                                    <p>{post.title}</p>
-                                    {post.featured && <div>{post.excerpt}</div>}
+                                    <p>
+                                        <a href={post.url} target="_blank">
+                                            {post.title}
+                                        </a>
+                                    </p>
+                                    {(post.featured || !fluid) && (
+                                        <div className="excerpt">
+                                            {post.excerpt}
+                                        </div>
+                                    )}
                                 </div>
                             </BlogPost>
                         </Card>
                     );
                 })}
-            </HomePageGrid>
+            </BlogGrid>
         </>
     );
 };
 
-export default HomePage;
+export default BlogPage;
 
 export const query = graphql`
     query {
         blogPosts: allGhostPost(
             sort: { order: DESC, fields: published_at }
-            limit: 20
+            limit: 50
             filter: {
                 visibility: { eq: "public" }
                 published_at: { lt: "now" }
@@ -143,7 +172,7 @@ export const query = graphql`
                 featured
                 featureImageSharp {
                     childImageSharp {
-                        fluid(maxWidth: 1200) {
+                        fluid(maxWidth: 800) {
                             ...GatsbyImageSharpFluid_withWebp
                         }
                     }
