@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { SEO, BreakPoints, PageHeader } from "./../components";
+import { SEO, BreakPoints, PageHeader, Card } from "./../components";
 import { graphql, Link } from "gatsby";
 import styled from "styled-components";
 import Img from "gatsby-image";
@@ -22,10 +22,6 @@ const BeerGrid = styled.div`
 `;
 
 const BeerCard = styled.div`
-    border-radius: 0.4rem;
-    overflow: hidden;
-    box-shadow: var(--tw-shadow);
-    background-color: var(--background);
     color: var(--foreground);
     display: grid;
     grid-template-columns: 1fr;
@@ -104,44 +100,50 @@ const BeerIndex: FC<IBeerData> = ({ data }) => {
 
             <BeerGrid>
                 {data.allUntappdCheckIn.nodes.map((checkin) => (
-                    <BeerCard key={checkin.checkin_id}>
-                        <ImgContainer>
-                            <Img
-                                fluid={{
-                                    ...checkin.photoUrlSharp.childImageSharp
-                                        .fluid,
-                                    aspectRatio: 7 / 5
-                                }}
-                                alt={`${checkin.brewery.name} ${checkin.beer.name}`}
-                            />
-                        </ImgContainer>
-                        <div className="deets">
-                            <p className="brewery">{checkin.brewery.name}</p>
-                            <p className="beer">{checkin.beer.name}</p>
-                            <p className="type">{checkin.beer.type}</p>
-                            {checkin.comment && (
-                                <p className="comments">{checkin.comment}</p>
-                            )}
-                            <dl className="ratings">
-                                <dt>My Rating</dt>
-                                <dd>{checkin.rating_score}</dd>
-                                <dt>Global Rating</dt>
-                                <dd>
-                                    {checkin.global_weighted_rating_score ||
-                                        checkin.global_rating_score}
-                                </dd>
-                            </dl>
-                            {checkin.flavor_profiles && (
-                                <ul className="profiles">
-                                    {checkin.flavor_profiles
-                                        .split(",")
-                                        .map((value) => (
-                                            <li key={value}>{value}</li>
-                                        ))}
-                                </ul>
-                            )}
-                        </div>
-                    </BeerCard>
+                    <Card key={checkin.checkin_id}>
+                        <BeerCard>
+                            <ImgContainer>
+                                <Img
+                                    fluid={{
+                                        ...checkin.photoUrlSharp.childImageSharp
+                                            .fluid,
+                                        aspectRatio: 7 / 5
+                                    }}
+                                    alt={`${checkin.brewery.name} ${checkin.beer.name}`}
+                                />
+                            </ImgContainer>
+                            <div className="deets">
+                                <p className="brewery">
+                                    {checkin.brewery.name}
+                                </p>
+                                <p className="beer">{checkin.beer.name}</p>
+                                <p className="type">{checkin.beer.type}</p>
+                                {checkin.comment && (
+                                    <p className="comments">
+                                        {checkin.comment}
+                                    </p>
+                                )}
+                                <dl className="ratings">
+                                    <dt>My Rating</dt>
+                                    <dd>{checkin.rating_score}</dd>
+                                    <dt>Global Rating</dt>
+                                    <dd>
+                                        {checkin.global_weighted_rating_score ||
+                                            checkin.global_rating_score}
+                                    </dd>
+                                </dl>
+                                {checkin.flavor_profiles && (
+                                    <ul className="profiles">
+                                        {checkin.flavor_profiles
+                                            .split(",")
+                                            .map((value) => (
+                                                <li key={value}>{value}</li>
+                                            ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </BeerCard>
+                    </Card>
                 ))}
             </BeerGrid>
         </>

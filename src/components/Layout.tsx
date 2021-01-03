@@ -94,24 +94,34 @@ const Nav = styled.nav`
         flex-grow: 1;
         box-sizing: border-box;
     }
+    a {
+        text-decoration: none;
+        line-height: 1.3rem;
+    }
     h1 {
         font-size: 1rem;
+        line-height: 1.3rem;
         margin: 0;
         color: var(--forground);
+        display: inline-block;
     }
     .menu {
         box-sizing: border-box;
         display: flex;
         a {
+            --alpha: 1;
             box-sizing: border-box;
-            background-color: #000;
+            background-color: rgba(0, 0, 0, var(--alpha));
             padding: 0.5rem 1rem;
             display: block;
             color: var(--forground);
             text-decoration: none;
             transition: 0.6s;
+            &:hover {
+                --alpha: 0.5;
+            }
             &.active {
-                background-color: transparent;
+                --alpha: 0.1;
             }
             &.icon {
                 padding: 0.5rem;
@@ -128,7 +138,7 @@ const Layout: FC<{}> = ({ children }) => {
             <LayoutDiv>
                 <Nav>
                     <div className="bar">
-                        <Link to="/">
+                        <Link to="/" title="About Me!">
                             <h1>Christopher Vachon</h1>
                         </Link>
                     </div>
@@ -137,19 +147,29 @@ const Layout: FC<{}> = ({ children }) => {
                         <Link
                             activeClassName="active"
                             to={"/recent-blog-posts"}
+                            title="Checkout my Recent Blog Posts"
                         >
                             Blog
                         </Link>
-                        <Link activeClassName="active" to={"/code"}>
+                        <Link
+                            activeClassName="active"
+                            to={"/code"}
+                            title="Checkout my Recent Coding Activities"
+                        >
                             Code
                         </Link>
-                        <Link activeClassName="active" to={"/beer"}>
+                        <Link
+                            activeClassName="active"
+                            to={"/beer"}
+                            title="Checkout my Recent Beer Activities"
+                        >
                             Beer
                         </Link>
                         <a
                             className="icon"
                             href="https://www.linkedin.com/in/christophervachon/"
                             target="_blank"
+                            title="Checkout my LinkedIn Profile!"
                         >
                             <FaLinkedin />
                         </a>
@@ -157,6 +177,7 @@ const Layout: FC<{}> = ({ children }) => {
                             className="icon"
                             href="https://twitter.com/CodeVachon"
                             target="_blank"
+                            title="Checkout my Twitter Profile!"
                         >
                             <FaTwitter />
                         </a>
@@ -164,6 +185,7 @@ const Layout: FC<{}> = ({ children }) => {
                             className="icon"
                             href="https://www.npmjs.com/~codevachon"
                             target="_blank"
+                            title="Checkout my NPM Profile!"
                         >
                             <FaNpm />
                         </a>
@@ -171,6 +193,7 @@ const Layout: FC<{}> = ({ children }) => {
                             className="icon"
                             href="https://github.com/CodeVachon"
                             target="_blank"
+                            title="Checkout my GitHub Profile!"
                         >
                             <FaGithub />
                         </a>

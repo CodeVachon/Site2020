@@ -4,20 +4,17 @@ import {
     BreakPoints,
     PageHeader,
     CircleGauge,
-    DefaultCircleGaugeColours
+    DefaultCircleGaugeColours,
+    Card
 } from "./../components";
 import { graphql } from "gatsby";
 import styled from "styled-components";
 
 const WakaDataSet = styled.div`
     padding: 1rem;
-    background-color: var(--background);
-    color: var(--forground);
     h2 {
         margin: 0 0 1rem 0;
     }
-    border-radius: 0.5rem;
-    box-shadow: var(--tw-shadow);
     ul {
         margin: 0;
         padding: 0;
@@ -88,51 +85,53 @@ const CodeIndex: FC<IWakaTimeGraphQLData> = ({ data }) => {
             <PageData>
                 {summaryRows.map((recordSet) => {
                     return (
-                        <WakaDataSet
+                        <Card
                             key={`data-${recordSet.title.replace(
                                 new RegExp("[^a-z09]{1,}", "g"),
                                 ""
                             )}`}
                         >
-                            <h2>{recordSet.title}</h2>
-                            <WakaDataSetSummary>
-                                <CircleGauge
-                                    values={recordSet.data.map((record) =>
-                                        Number(record.percent)
-                                    )}
-                                />
-                                <ul>
-                                    {recordSet.data.map((record, index) => (
-                                        <li
-                                            key={record.name.replace(
-                                                new RegExp(
-                                                    "[^a-z0-9]{1,}",
-                                                    "gi"
-                                                ),
-                                                "-"
-                                            )}
-                                        >
-                                            <span
-                                                className="color"
-                                                style={{
-                                                    backgroundColor:
-                                                        DefaultCircleGaugeColours[
-                                                            index
-                                                        ]
-                                                }}
-                                            ></span>{" "}
-                                            <span>
-                                                {record.name} (
-                                                {Number(record.percent).toFixed(
-                                                    2
+                            <WakaDataSet>
+                                <h2>{recordSet.title}</h2>
+                                <WakaDataSetSummary>
+                                    <CircleGauge
+                                        values={recordSet.data.map((record) =>
+                                            Number(record.percent)
+                                        )}
+                                    />
+                                    <ul>
+                                        {recordSet.data.map((record, index) => (
+                                            <li
+                                                key={record.name.replace(
+                                                    new RegExp(
+                                                        "[^a-z0-9]{1,}",
+                                                        "gi"
+                                                    ),
+                                                    "-"
                                                 )}
-                                                %)
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </WakaDataSetSummary>
-                        </WakaDataSet>
+                                            >
+                                                <span
+                                                    className="color"
+                                                    style={{
+                                                        backgroundColor:
+                                                            DefaultCircleGaugeColours[
+                                                                index
+                                                            ]
+                                                    }}
+                                                ></span>{" "}
+                                                <span>
+                                                    {record.name} (
+                                                    {Number(
+                                                        record.percent
+                                                    ).toFixed(2)}
+                                                    %)
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </WakaDataSetSummary>
+                            </WakaDataSet>
+                        </Card>
                     );
                 })}
             </PageData>

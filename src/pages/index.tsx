@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { SEO, BreakPoints } from "./../components";
+import { SEO, BreakPoints, Card } from "./../components";
 import { graphql } from "gatsby";
 import styled from "styled-components";
 import Img from "gatsby-image";
@@ -48,10 +48,6 @@ const ImgContainer = styled.figure`
     padding: 0;
     box-sizing: border-box;
     line-height: auto;
-`;
-
-const Card = styled.div`
-    background-color: var(--card-background);
 `;
 
 const HomePage: FC<{
