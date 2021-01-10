@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import "normalize.css";
 import styled, { createGlobalStyle } from "styled-components";
 import { SEO } from "./SEO";
+import { BreakPoints } from "./BreakPoints";
 import { Link } from "gatsby";
 import { FaTwitter, FaLinkedin, FaNpm, FaGithub } from "react-icons/fa";
 
@@ -12,13 +13,13 @@ const GlobalStyles = createGlobalStyle`
     --background: #333;
     --forground: #eee;
     --link: #00f;
-
+    --highlight: #a89e0a;
     --card-background: #222;
 
     --mobilebp: 400px;
     --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
+    --border-radius: 0.4rem;
     --background-rotation: 45deg;
 }
 
@@ -68,19 +69,48 @@ const LayoutDiv = styled.div`
     grid-template-rows: auto 1fr auto;
     .content {
     }
-    footer {
+    & > footer {
+        display: flex;
+        justify-content: space-between;
         padding: 0.5rem 1rem;
         position: relative;
         z-index: 1;
         background-color: var(--background, #333);
-        font-size: 0.7rem;
+        font-size: 0.8rem;
+        gap: 0.4rem;
         p {
             margin: 0;
         }
         a {
             color: var(--forground);
+            & .icon {
+                display: inline-block;
+                height: 1.2em;
+                width: 1.2em;
+            }
+        }
+        .menu {
+            display: flex;
+            gap: 0.4rem;
+            a {
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: ${BreakPoints.Tablet}) {
+            padding: 1rem;
+            flex-direction: column-reverse;
+            align-items: center;
+            .menu {
+                a {
+                    font-size: 1.3rem;
+                }
+            }
         }
     }
+`;
+
+const MaxWidth = styled.section`
+    max-width: 1800px;
 `;
 
 const Nav = styled.nav`
@@ -97,6 +127,7 @@ const Nav = styled.nav`
     a {
         text-decoration: none;
         line-height: 1.3rem;
+        outline: none;
     }
     h1 {
         font-size: 1rem;
@@ -125,12 +156,53 @@ const Nav = styled.nav`
             }
             &.icon {
                 padding: 0.5rem;
+                @media (max-width: ${BreakPoints.Tablet}) {
+                    padding: 0;
+                    display: none;
+                }
             }
         }
     }
 `;
 
 const Layout: FC<{}> = ({ children }) => {
+    const SocialMedia = (
+        <>
+            <a
+                className="icon"
+                href="https://www.linkedin.com/in/christophervachon/"
+                target="_blank"
+                title="Checkout my LinkedIn Profile!"
+            >
+                <FaLinkedin />
+            </a>
+            <a
+                className="icon"
+                href="https://twitter.com/CodeVachon"
+                target="_blank"
+                title="Checkout my Twitter Profile!"
+            >
+                <FaTwitter />
+            </a>
+            <a
+                className="icon"
+                href="https://www.npmjs.com/~codevachon"
+                target="_blank"
+                title="Checkout my NPM Profile!"
+            >
+                <FaNpm />
+            </a>
+            <a
+                className="icon"
+                href="https://github.com/CodeVachon"
+                target="_blank"
+                title="Checkout my GitHub Profile!"
+            >
+                <FaGithub />
+            </a>
+        </>
+    );
+
     return (
         <>
             <SEO />
@@ -165,38 +237,7 @@ const Layout: FC<{}> = ({ children }) => {
                         >
                             Beer
                         </Link>
-                        <a
-                            className="icon"
-                            href="https://www.linkedin.com/in/christophervachon/"
-                            target="_blank"
-                            title="Checkout my LinkedIn Profile!"
-                        >
-                            <FaLinkedin />
-                        </a>
-                        <a
-                            className="icon"
-                            href="https://twitter.com/CodeVachon"
-                            target="_blank"
-                            title="Checkout my Twitter Profile!"
-                        >
-                            <FaTwitter />
-                        </a>
-                        <a
-                            className="icon"
-                            href="https://www.npmjs.com/~codevachon"
-                            target="_blank"
-                            title="Checkout my NPM Profile!"
-                        >
-                            <FaNpm />
-                        </a>
-                        <a
-                            className="icon"
-                            href="https://github.com/CodeVachon"
-                            target="_blank"
-                            title="Checkout my GitHub Profile!"
-                        >
-                            <FaGithub />
-                        </a>
+                        {SocialMedia}
                     </div>
                 </Nav>
                 <div className="content">{children}</div>
@@ -205,6 +246,7 @@ const Layout: FC<{}> = ({ children }) => {
                     <p>
                         &copy; Copyright {new Date().getFullYear()} CodeVachon
                     </p>
+                    <div className="menu">{SocialMedia}</div>
                 </footer>
             </LayoutDiv>
         </>

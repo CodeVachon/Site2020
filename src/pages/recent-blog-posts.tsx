@@ -15,6 +15,9 @@ const BlogGrid = styled.section`
         grid-column-start: span 2;
         grid-row-start: span 2;
     }
+    .post:last-child {
+        grid-column: auto / -1;
+    }
     @media (max-width: ${BreakPoints.Tablet}) {
         grid-template-columns: 1fr;
         .featured {
@@ -101,7 +104,9 @@ const BlogPage: FC<{
                     return (
                         <Card
                             key={post.id}
-                            className={post.featured ? "featured" : ""}
+                            className={
+                                "post" + (post.featured ? " featured" : "")
+                            }
                         >
                             <BlogPost>
                                 {fluid && (
